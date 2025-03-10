@@ -1,7 +1,7 @@
 {
 	"id": "mistral-ocr",
 	"name": "Mistral OCR",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"minAppVersion": "0.15.0",
 	"description": "Extract text from images using Mistral AI's OCR capabilities and insert it directly into your notes.",
 	"author": "fTrestour",

@@ -1,6 +1,6 @@
 {
 	"name": "mistral-ocr",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "OCR plugin using Mistral API for Obsidian",
 	"main": "main.js",
 	"scripts": {
