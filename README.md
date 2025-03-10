@@ -1,6 +1,6 @@
 # Mistral OCR for Obsidian
 
-This plugin allows you to perform OCR (Optical Character Recognition) on images using the Mistral AI API directly within Obsidian. Extract text from screenshots, scanned documents, photos of text, PDFs, and other image-based content and easily integrate it into your notes.
+This plugin allows you to perform OCR (Optical Character Recognition) on images using the [Mistral AI](https://mistral.ai/) API directly within Obsidian. Extract text from screenshots, scanned documents, photos of text, PDFs, and other image-based content and easily integrate it into your notes.
 
 ## How to Use
 
@@ -23,6 +23,14 @@ This plugin allows you to perform OCR (Optical Character Recognition) on images 
 
 -   Your images are processed by Mistral AI's servers according to their [privacy policy](https://mistral.ai/privacy/)
 -   Your API key is stored locally in your Obsidian configuration and is only used to authenticate with Mistral's API
+-   No image data is stored locally after processing
+-   All text extraction is performed server-side by Mistral AI
+
+## Third-Party Attribution
+
+This plugin relies on the following third-party services:
+
+-   **Mistral AI**: The OCR functionality is powered by [Mistral AI](https://mistral.ai/). Please refer to Mistral AI's [terms of service and privacy policy](https://mistral.ai/terms/) for details about how they process and handle your data.
 
 ## Development
 

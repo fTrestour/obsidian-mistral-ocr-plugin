@@ -15,7 +15,7 @@ export default class MistralOCRPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		const ribbonIconEl = this.addRibbonIcon('image-file', 'Mistral OCR', (evt: MouseEvent) => {
+		this.addRibbonIcon('image-file', 'Mistral OCR', (evt: MouseEvent) => {
 			this.selectImageAndProcess();
 		});
 
@@ -110,23 +110,43 @@ export default class MistralOCRPlugin extends Plugin {
 		try {
 			const client = new Mistral({ apiKey: this.settings.apiKey });
 
-			const ocrResponse = await client.ocr.process({
-				model: "mistral-ocr-latest",
-				document: {
-					type: "image_url",
-					imageUrl: `data:image/jpeg;base64,${imageData}`
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+			try {
+				const ocrResponse = await client.ocr.process({
+					model: "mistral-ocr-latest",
+					document: {
+						type: "image_url",
+						imageUrl: `data:image/jpeg;base64,${imageData}`
+					}
+				});
+
+				clearTimeout(timeoutId);
+
+				let extractedText = '';
+				if (ocrResponse.pages && ocrResponse.pages.length > 0) {
+					extractedText = ocrResponse.pages.map(page => page.markdown).join('\n\n');
 				}
-			});
 
-			let extractedText = '';
-			if (ocrResponse.pages && ocrResponse.pages.length > 0) {
-				extractedText = ocrResponse.pages.map(page => page.markdown).join('\n\n');
+				return extractedText;
+			} catch (error) {
+				clearTimeout(timeoutId);
+				throw error;
 			}
-
-			return extractedText;
 		} catch (error) {
 			console.error('OCR error:', error);
-			new Notice(`OCR failed: ${error.message}`);
+
+			if (error.name === 'AbortError') {
+				new Notice('OCR request timed out. Please try again or check your internet connection.');
+			} else if (error.message?.includes('NetworkError') || error.message?.includes('Failed to fetch')) {
+				new Notice('Network error. Please check your internet connection and try again.');
+			} else if (error.message?.includes('Unauthorized') || error.message?.includes('401')) {
+				new Notice('Invalid API key. Please check your Mistral API key in settings.');
+			} else {
+				new Notice(`OCR failed: ${error.message}`);
+			}
+
 			return '';
 		}
 	}
