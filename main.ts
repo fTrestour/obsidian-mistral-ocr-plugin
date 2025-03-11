@@ -32,9 +32,9 @@ export default class MistralOCRPlugin extends Plugin {
 
 	async selectImageAndProcess() {
 		const fileInput = document.createElement('input');
+		fileInput.className = 'image-file-input';
 		fileInput.type = 'file';
 		fileInput.accept = 'image/*';
-		fileInput.style.display = 'none';
 		document.body.appendChild(fileInput);
 
 		fileInput.addEventListener('change', async () => {
